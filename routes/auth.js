@@ -25,6 +25,7 @@ router.post('/', async (req, res) =>{
     }
 });
 
+//dmlkfanlkfnlkrnlkgnl
 //회원가입 요청 라우터
 router.post('/join', async (req, res) =>{
     const data={
