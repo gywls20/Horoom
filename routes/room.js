@@ -16,7 +16,7 @@ router.get('/All', function(req, res){
     }else if(sort=='hits'){
         sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by count DESC'
     }
-    dbConfig.connection.query('SELECT roomName, location, price1, price2, deposit, latitude, longitude FROM room '+sort, (err, rows) => {
+    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude FROM room '+sort, (err, rows) => {
         if(err){
             throw err;
         }
@@ -28,18 +28,29 @@ router.get('/All', function(req, res){
 router.get('/noAll', function(req, res){
     let category=req.query.category;
     let sort=req.query.sort;
-
+    let op =req.query.op;
     if(sort=='asc'){
         sort='where category=? order by price1 asc'
     }else if(sort=='desc'){
         sort='where category=? order by price1 desc'
     }else if(sort=='rank'){
-        sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=?  order by heart+comment+count DESC'
+        sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by heart+comment+count DESC'
     }else if(sort=='hits'){
         sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by count DESC'
     }
+    if(op!=null){
+        if(sort=='asc'){
+            sort='where category=? and price2 order by price1 asc'
+        }else if(sort=='desc'){
+            sort='where category=? and price2 order by price1 desc'
+        }else if(sort=='rank'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? and price2 order by heart+comment+count DESC'
+        }else if(sort=='hits'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? and price2 order by count DESC'
+        }
+    }
 
-    dbConfig.connection.query('SELECT roomName, location, price1, price2, deposit, latitude, longitude FROM project01.room ' +sort, [category], (err, rows)=>{
+    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude FROM project01.room ' +sort, [category], (err, rows)=>{
         if(err){
             throw err;
         }
@@ -58,7 +69,7 @@ router.get('/search',  function(req, res){
         if(err){
             throw err;
         }
-        res.send(rows);
+        res.send({"room": rows});
     });
 
     // dbConfig.connection.query('SELECT * FROM room where roomName=?',[data.rN],(err, rows) => {   //이름을 정확하게 입력해야만 작동
@@ -69,10 +80,28 @@ router.get('/search',  function(req, res){
     // });
 });
 
-//하트 라우터
-router.get('/heart',  function(req, res){
+//
+router.get('/heartCount',  function(req, res){
     let r_pk=req.query.r_pk;
-    let u_pk=req.query.u_pk;
+    dbConfig.connection.query('SELECT r_pk, heart from project01.sum where r_pk=?;',[r_pk],(err, rows) => {
+        if(err){
+            throw err;
+        }
+        if(rows[0]==null){
+            res.send("아무것도 없어요~~")
+        }else{
+            res.send({"room": rows});
+        }
+    });
+});
+
+
+
+//유저 하트 라우터
+router.post('/heart',  function(req, res){
+    let u_pk=req.get('u_pk');
+
+    
     dbConfig.connection.query('SELECT r_pk, heart_check from project01.heart where u_pk=?;',[u_pk],(err, rows) => {
         if(err){
             throw err;
@@ -80,7 +109,8 @@ router.get('/heart',  function(req, res){
         if(rows[0]==null){
             res.send("X")
         }else{
-            res.send(rows);
+            console.log(u_pk)
+            res.send({"room": rows});
         }
     });
 });
@@ -93,7 +123,7 @@ router.get('/commentView',  function(req, res){
             throw err;
         }
         console.log(rows);
-        res.send(rows);
+        res.send({"room": rows});
     });
 });
 router.post('/comment', function(req,res){
@@ -106,7 +136,19 @@ router.post('/comment', function(req,res){
             throw err;
         }
         console.log(rows);
-        res.send(rows);
+        res.send({"room": rows});
+    });
+});
+
+//조회수 카운팅라우터
+router.post('/count', function(req,res){
+    let r_pk = req.get('r_pk');
+    
+    dbConfig.connection.query('UPDATE project01.sum SET count=count+1 where r_pk=?;',[r_pk],(err,rows) =>{
+        if(err){
+            throw err;
+        }
+        res.send("완료");
     });
 });
 

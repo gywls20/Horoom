@@ -8,8 +8,8 @@ const dbInfo = {
     database : 'project01'
 };
 
-const connection = mysql.createConnection(dbInfo);
-connection.connect();
+const connection = mysql.createPool(dbInfo);
+//connection.connect();
 
 function login(ID,PW){
     return new Promise((res, rej) => {
