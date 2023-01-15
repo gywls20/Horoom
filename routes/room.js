@@ -6,17 +6,32 @@ var dbConfig = require('../config/db');
 //전체 방 리스트업
 router.get('/All', function(req, res){
     let sort=req.query.sort;
+    let op =req.query.op;
+    
 
-    if(sort=='asc'){
-        sort='order by price1 asc'
-    }else if(sort=='desc'){
-        sort='order by price1 desc'
-    }else if(sort=='rank'){
-        sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by heart+comment+count DESC'
-    }else if(sort=='hits'){
-        sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by count DESC'
+    if(op!=null){
+        if(sort=='asc'){
+            sort='where price2 order by price1 asc'
+        }else if(sort=='desc'){
+            sort='where price2 order by price1 desc'
+        }else if(sort=='rank'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk where price2 order by heart+comment+count DESC'
+        }else if(sort=='hits'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk where price2 order by count DESC'
+        }
+    }else{
+        if(sort=='asc'){
+            sort='order by price1 asc'
+        }else if(sort=='desc'){
+            sort='order by price1 desc'
+        }else if(sort=='rank'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by heart+comment+count DESC'
+        }else if(sort=='hits'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by count DESC'
+        }
     }
-    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude FROM room '+sort, (err, rows) => {
+
+    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude FROM room '+sort, [op],(err, rows) => {
         if(err){
             throw err;
         }
@@ -29,15 +44,7 @@ router.get('/noAll', function(req, res){
     let category=req.query.category;
     let sort=req.query.sort;
     let op =req.query.op;
-    if(sort=='asc'){
-        sort='where category=? order by price1 asc'
-    }else if(sort=='desc'){
-        sort='where category=? order by price1 desc'
-    }else if(sort=='rank'){
-        sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by heart+comment+count DESC'
-    }else if(sort=='hits'){
-        sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by count DESC'
-    }
+
     if(op!=null){
         if(sort=='asc'){
             sort='where category=? and price2 order by price1 asc'
@@ -47,6 +54,16 @@ router.get('/noAll', function(req, res){
             sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? and price2 order by heart+comment+count DESC'
         }else if(sort=='hits'){
             sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? and price2 order by count DESC'
+        }
+    }else{
+        if(sort=='asc'){
+            sort='where category=? order by price1 asc'
+        }else if(sort=='desc'){
+            sort='where category=? order by price1 desc'
+        }else if(sort=='rank'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by heart+comment+count DESC'
+        }else if(sort=='hits'){
+            sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by count DESC'
         }
     }
 
