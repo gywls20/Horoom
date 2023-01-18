@@ -39,22 +39,24 @@ var dbConfig = require('../config/db');
 //     }); 
 // });
 
-//카테고리 선택한 방
+//방
 router.get('', function(req, res){
+    let u_pk=req.get('u_pk');
     let category=req.query.category;
     let sort=req.query.sort;
     let op =req.query.op;
-
+    let item='room_pk, roomName, location, price1, price2, deposit, latitude, longitude, category, heart, u_pk'
+    
     if(category==0){
         if(op!=null){
             if(sort=='asc'){
-                sort='where price2 order by price1 asc'
+                sort='and price2 order by price1 asc'
             }else if(sort=='desc'){
-                sort='where price2 order by price1 desc'
+                sort='and price2 order by price1 desc'
             }else if(sort=='rank'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk where price2 order by heart+comment+count DESC'
+                sort='and price2 order by heart+comment+count DESC'
             }else if(sort=='hits'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk where price2 order by count DESC'
+                sort='and price2 order by count DESC'
             }
         }else{
             if(sort=='asc'){
@@ -62,38 +64,37 @@ router.get('', function(req, res){
             }else if(sort=='desc'){
                 sort='order by price1 desc'
             }else if(sort=='rank'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by heart+comment+count DESC'
+                sort='order by heart+comment+count DESC'
             }else if(sort=='hits'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk order by count DESC'
+                sort='order by count DESC'
             }
         }
     }
     else{
         if(op!=null){
             if(sort=='asc'){
-                sort='where category=? and price2 order by price1 asc'
+                sort='and category=? and price2 order by price1 asc'
             }else if(sort=='desc'){
-                sort='where category=? and price2 order by price1 desc'
+                sort='and category=? and price2 order by price1 desc'
             }else if(sort=='rank'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? and price2 order by heart+comment+count DESC'
+                sort='and category=? and price2 order by heart+comment+count DESC'
             }else if(sort=='hits'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? and price2 order by count DESC'
+                sort='and category=? and price2 order by count DESC'
             }
         }else{
             if(sort=='asc'){
-                sort='where category=? order by price1 asc'
+                sort='and category=? order by price1 asc'
             }else if(sort=='desc'){
-                sort='where category=? order by price1 desc'
+                sort='and category=? order by price1 desc'
             }else if(sort=='rank'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by heart+comment+count DESC'
+                sort='and category=? order by heart+comment+count DESC'
             }else if(sort=='hits'){
-                sort='INNER JOIN sum ON room.room_pk = sum.r_pk where category=? order by count DESC'
+                sort='and category=? order by count DESC'
             }
         }
     }
-    
-
-    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude, category FROM project01.room ' +sort, [category], (err, rows)=>{
+    console.log(u_pk)
+    dbConfig.connection.query(`SELECT ${item} FROM project01.room INNER JOIN sum ON room.room_pk = sum.r_pk left JOIN heart ON room.room_pk = heart.r_pk where (u_pk=? or u_pk is NULL) ${sort}`, [u_pk,category], (err, rows)=>{
         if(err){
             throw err;
         }
@@ -108,7 +109,7 @@ router.get('/search',  function(req, res){
     }
     console.log(req.query.rN);
     let query=data.rN
-    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude FROM room WHERE roomName LIKE ?', '%' + query + '%',(err, rows) => {
+    dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude, category FROM room WHERE roomName LIKE ?', '%' + query + '%',(err, rows) => {
         if(err){
             throw err;
         }
@@ -123,40 +124,37 @@ router.get('/search',  function(req, res){
     // });
 });
 
-//
-router.get('/heartCount',  function(req, res){
-    let r_pk=req.query.r_pk;
-    dbConfig.connection.query('SELECT r_pk, heart from project01.sum where r_pk=?;',[r_pk],(err, rows) => {
-        if(err){
-            throw err;
-        }
-        if(rows[0]==null){
-            res.send("아무것도 없어요~~")
-        }else{
-            res.send({"room": rows});
-        }
-    });
-});
-
-
-
+////***** 룸 라우터와 통합하여 폐기 */
+//방별 하트 숫자 
+// router.get('/heartCount',  function(req, res){
+//     let r_pk=req.query.r_pk;
+//     dbConfig.connection.query('SELECT r_pk, heart from project01.sum where r_pk=?;',
+//     [r_pk],(err, rows) => {
+//         if(err){
+//             throw err;
+//         }
+//         if(rows[0]==null){
+//             res.send("아무것도 없어요~~")
+//         }else{
+//             res.send({"room": rows});
+//         }
+//     });
+// });
 //유저 하트 라우터
-router.post('/heart',  function(req, res){
-    let u_pk=req.get('u_pk');
-
-    
-    dbConfig.connection.query('SELECT r_pk, heart_check from project01.heart where u_pk=?;',[u_pk],(err, rows) => {
-        if(err){
-            throw err;
-        }
-        if(rows[0]==null){
-            res.send("X")
-        }else{
-            console.log(u_pk)
-            res.send({"room": rows});
-        }
-    });
-});
+// router.post('/heart',  function(req, res){
+//     let u_pk=req.get('u_pk');
+//     dbConfig.connection.query('SELECT r_pk, heart_check from project01.heart where u_pk=?;',[u_pk],(err, rows) => {
+//         if(err){
+//             throw err;
+//         }
+//         if(rows[0]==null){
+//             res.send("하트누른게 없어요~~")
+//         }else{
+//             console.log(u_pk)
+//             res.send({"room": rows});
+//         }
+//     });
+// });
 
 //댓글창
 router.get('/commentView',  function(req, res){
