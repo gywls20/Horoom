@@ -93,7 +93,6 @@ router.get('', function(req, res){
             }
         }
     }
-    console.log(u_pk)
     dbConfig.connection.query(`SELECT ${item} FROM project01.room INNER JOIN sum ON room.room_pk = sum.r_pk left JOIN heart ON room.room_pk = heart.r_pk where (u_pk=? or u_pk is NULL) ${sort}`, [u_pk,category], (err, rows)=>{
         if(err){
             throw err;
@@ -107,7 +106,6 @@ router.get('/search',  function(req, res){
     const data={
         rN:req.query.rN
     }
-    console.log(req.query.rN);
     let query=data.rN
     dbConfig.connection.query('SELECT room_pk, roomName, location, price1, price2, deposit, latitude, longitude, category FROM room WHERE roomName LIKE ?', '%' + query + '%',(err, rows) => {
         if(err){
@@ -163,7 +161,7 @@ router.get('/commentView',  function(req, res){
         if(err){
             throw err;
         }
-        console.log(rows);
+
         res.send({"room": rows});
     });
 });
@@ -176,7 +174,7 @@ router.post('/comment', function(req,res){
         if(err){
             throw err;
         }
-        console.log(rows);
+
         res.send({"room": rows});
     });
 });
