@@ -38,9 +38,6 @@ Ho룸은 대학교 근처 자취방 정보를 제공하고 사용자들과 공�
 
 
 <p align="center">
-<img src="https://file.notion.so/f/f/eb15b354-f13f-41b1-9a65-7c56684b99b8/58369506-6aaf-4986-bbf2-4350e1c80065/Untitled.png?id=a6795e3e-4644-40b8-926b-2c3015ba9d57&table=block&spaceId=eb15b354-f13f-41b1-9a65-7c56684b99b8&expirationTimestamp=1714183200000&signature=m-IGIb9vBgtEOHzxSHmi20fHCAN0XWw80sxnd4-L86A&downloadName=Untitled.png" width="300" >
-<img src="https://file.notion.so/f/f/eb15b354-f13f-41b1-9a65-7c56684b99b8/e585d3bb-5afc-4198-8ba8-5e5795639cf5/Untitled.png?id=aa684878-1e1e-4947-841c-8f82e68ba241&table=block&spaceId=eb15b354-f13f-41b1-9a65-7c56684b99b8&expirationTimestamp=1714190400000&signature=5_mmlz9ktnXRd2DD4J1F09yZUlLZaWQMAloPWMUjEsI&downloadName=Untitled.png" width="300">
-<img src="https://file.notion.so/f/f/eb15b354-f13f-41b1-9a65-7c56684b99b8/7497c4d9-fe15-41a9-8d36-565b060a4c0f/Untitled.png?id=972e84ef-2661-4bc6-a0c8-cd6178912018&table=block&spaceId=eb15b354-f13f-41b1-9a65-7c56684b99b8&expirationTimestamp=1714190400000&signature=z_gChyG4B4UXz_UNxojQ8s2A5lOGu3dD4ZhDh8ppaZM&downloadName=Untitled.png" width="300px">
 <img src="https://private-user-images.githubusercontent.com/122339761/325868059-ae921f7b-fd1e-4a8c-9640-fb29628ae722.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjAwNjc1MjUsIm5iZiI6MTcyMDA2NzIyNSwicGF0aCI6Ii8xMjIzMzk3NjEvMzI1ODY4MDU5LWFlOTIxZjdiLWZkMWUtNGE4Yy05NjQwLWZiMjk2MjhhZTcyMi5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNzA0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDcwNFQwNDI3MDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hMDhlNGY1NzIyNTE0NzkwY2M0YTdkMDY2MGIzMDlmYmViYmYwZDZmNjIxNjE1N2Q0YmFiNTRjZDA4YzY0NzJmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.Fdkj5YZbhmH50HXjNqF1WsZJfXMie7tDzcximQRV8yk" width="900px">
 </p>
 
